@@ -1,0 +1,16 @@
+.message {
+  min-height: 10px;
+  padding: 10px 20px;
+}
+
+.message-author {
+  margin: 0;
+}
+
+.message-content {
+  margin: 0;
+}
+
+.message.pending {
+  opacity: 0.3;
+}
