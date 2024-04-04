@@ -1,7 +1,7 @@
 # Dumb Chat App
 
-Simple or Dumb chat app as you expected, allows you to easily chat
-via text messages with extra features:
+Simple or Dumb chat app as you expected, easily create rooms to chat with
+people... with extra features:
 
 - Chat in group or DM them
 - Create chatrooms for differents topics
