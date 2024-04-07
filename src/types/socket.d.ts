@@ -1,17 +1,9 @@
-export type Message = {
-  id: string;
-  author_id: string;
-  content: string;
-};
-
-export type User = {
-  id: string;
-};
+import { User } from "./chat";
 
 export type ServerToClientEvents = {
   message: (payload: Message) => void;
-  userJoined: (userId: string) => void;
-  userLeft: (userId: string) => void;
+  userJoined: (user: User) => void;
+  userLeft: (user: User) => void;
 };
 
 export type ClientToServerEvents = {
@@ -20,3 +12,7 @@ export type ClientToServerEvents = {
     callback: (result: { status: "OK" | "INTERNAL_SERVER_ERROR" }) => void
   ) => void;
 };
+
+export type SocketData = {
+  username: string;
+}
