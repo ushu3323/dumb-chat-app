@@ -65,6 +65,11 @@ export default class WSChatServer extends Server<
 
         callback({ status: "OK" });
       });
+
+      socket.on("disconnect", () => {
+        socket.broadcast.emit("userLeft", { id: socket.id, username: currentUsername });
+        this.#usernames.delete(currentUsername);
+      });
     });
   }
 }
