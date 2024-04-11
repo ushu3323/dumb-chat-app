@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { createClient } from "../../lib/socket-io/client";
-import { MessageWithStatus, Status, UpdatePayload } from "../../types/chat";
+import { MessageWithStatus, Status, UpdatePayload, User } from "../../types/chat";
 
 export interface Chat {
   sendMessage: (content: string) => void;
@@ -17,6 +17,7 @@ export interface ChatSession {
   join: (username: string) => void;
   username: string | null;
   chat: Chat;
+  connectedUsers: User[] | null;
 }
 
 const ChatSessionContext = createContext<ChatSession>({} as ChatSession)
@@ -27,6 +28,7 @@ export function ChatSessionProvider({ children }: PropsWithChildren) {
   const socket = useMemo(() => createClient({ autoConnect: false }), []);
   const [username, setUsername] = useState<string | null>(null);
   const [messages, setMessages] = useState<MessageWithStatus[]>([]);
+  const [connectedUsers, setConnectedUsers] = useState<User[] | null>(null);
 
   const sendMessage = (content: string) => {
     if(!username) {
@@ -70,11 +72,36 @@ export function ChatSessionProvider({ children }: PropsWithChildren) {
       };
       setMessages((messages) => [...messages, message]);
     });
+
+    socket.on("listUsers", (users) => {
+      setConnectedUsers(users);
+    });
+
+    socket.on("userJoined", (joined) => {
+      const result = [
+        ...(connectedUsers ?? []),
+        joined
+      ]
+      console.log("userJoined", {result})
+      setConnectedUsers(result);
+    });
+
+    socket.on("userLeft", (left) => {
+      const connected = connectedUsers ?? []
+      const i = connected.findIndex((user) => user.id === left.id);
+      const copy = connected.slice();
+      copy.splice(i, 1);
+      setConnectedUsers(copy)
+    });
+
     return () => {
       if (socket.active) {
         socket!.disconnect();
       }
-      socket!.off("message");
+      socket.off("message");
+      socket.off("listUsers")
+      socket.off("userJoined")
+      socket.off("userLeft")
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -111,12 +138,14 @@ export function ChatSessionProvider({ children }: PropsWithChildren) {
       socket.auth = { username };
       socket.connect();
       setUsername(username);
+      setConnectedUsers([]);
     },
     username,
     chat: {
       sendMessage,
       messages,
     },
+    connectedUsers,
   };
 
   return (
