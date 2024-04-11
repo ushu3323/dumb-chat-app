@@ -1,0 +1,23 @@
+.users-sidebar {
+  width: 14em;
+  background-color: var(--black-3);
+  height: 100%; 
+}
+
+.users-sidebar .title {
+  text-align: center;
+  margin-top: 10px; 
+}
+
+.users-list {
+  padding: 0.5em;
+}
+
+.users-list--item {
+  padding: 0.6em;
+  margin-bottom: 0.5em;
+  border-radius: 10px;
+  background: var(--black-1);
+  font-weight: bold;
+  list-style-type: none;
+}

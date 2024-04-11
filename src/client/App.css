@@ -12,7 +12,7 @@
   border-radius: 8px;
   border-width: 0px;
 
-  background-color: #222;
+  background-color: var(--black-2);
   font-size: 1em;
   font-family: inherit;
 }

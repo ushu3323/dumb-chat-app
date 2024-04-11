@@ -4,14 +4,22 @@
   font-weight: 400;
 
   color-scheme: light dark;
+
+  --black-1: #181818;
+  --black-2: #1d1d1d;
+  --black-3: #222222;
+  --black-4: #262626;
+  --black-5: #2b2b2b;
+
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: var(--black-1);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
 }
 
 * {
@@ -46,7 +54,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--black-2);
   cursor: pointer;
   transition: border-color 0.25s;
 }

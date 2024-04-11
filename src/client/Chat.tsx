@@ -3,6 +3,9 @@ import { type FormEvent } from "react";
 import useChatSession from "./hooks/useChatSession";
 import Message from "./components/Message/Message";
 import UsernamePrompt from "./components/UsernamePrompt/UsernamePrompt";
+import UsersSidebar from "./components/UsersSidebar/UsersSidebar";
+
+const USERS = ["Steve", "Alex"];
 
 export default function Chat() {
   const { chat, username, join } = useChatSession();
@@ -27,28 +30,38 @@ export default function Chat() {
           )}
         </div>
       </header>
-      <main className="chat">
-        {chat.messages.map(({ status, data: { id, author, content } }) => (
-          <Message key={id} author={author} content={content} status={status} />
-        ))}
-      </main>
-      <div className="message-box">
-        <form
-          onSubmit={handleMessageSubmit}
-          className="message-box--form"
-          autoComplete="off"
-        >
-          <input
-            type="text"
-            name="message"
-            id="message"
-            placeholder="Mensaje"
-            className="textinput"
-          />
-          <button type="submit" disabled={!username}>
-            Enviar
-          </button>
-        </form>
+      <div className="chat">
+        <div className="chat-container">
+          <main className="messages">
+            {chat.messages.map(({ status, data: { id, author, content } }) => (
+              <Message
+                key={id}
+                author={author}
+                content={content}
+                status={status}
+              />
+            ))}
+          </main>
+          <div className="message-box">
+            <form
+              onSubmit={handleMessageSubmit}
+              className="message-box--form"
+              autoComplete="off"
+            >
+              <input
+                type="text"
+                name="message"
+                id="message"
+                placeholder="Mensaje"
+                className="textinput"
+              />
+              <button type="submit" disabled={!username}>
+                Enviar
+              </button>
+            </form>
+          </div>
+        </div>
+        <UsersSidebar users={USERS} />
       </div>
     </>
   );
