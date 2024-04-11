@@ -1,8 +1,8 @@
 import express from "express";
-import { createServer as createSocketServer } from "../lib/socket-io/server";
 import fs from "fs/promises";
 import path from "path";
 import type { ViteDevServer } from "vite";
+import WSChatServer from "./ws-chat-server";
 
 const isProduction = process.env.NODE_ENV === "production";
 const port = process.env.PORT || 5173;
@@ -15,7 +15,7 @@ const templateHtml = isProduction
 
 async function createServer() {
   const app = express();
-  const io = createSocketServer();
+  const wsChatServer = new WSChatServer();
 
   app.get("/api", (_req, res) => {
     res.send("Hello!");
@@ -63,7 +63,7 @@ async function createServer() {
   const server = app.listen(port, () =>
     console.log("Server is listening at port", port)
   );
-  io.attach(server);
+  wsChatServer.attach(server);
 }
 
 createServer();
