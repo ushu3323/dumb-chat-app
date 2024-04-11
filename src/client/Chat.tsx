@@ -5,10 +5,8 @@ import Message from "./components/Message/Message";
 import UsernamePrompt from "./components/UsernamePrompt/UsernamePrompt";
 import UsersSidebar from "./components/UsersSidebar/UsersSidebar";
 
-const USERS = ["Steve", "Alex"];
-
 export default function Chat() {
-  const { chat, username, join } = useChatSession();
+  const { chat, username, join, connectedUsers } = useChatSession();
 
   const handleMessageSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,7 +59,7 @@ export default function Chat() {
             </form>
           </div>
         </div>
-        <UsersSidebar users={USERS} />
+        <UsersSidebar username={username} users={connectedUsers} />
       </div>
     </>
   );
