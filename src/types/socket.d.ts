@@ -2,6 +2,7 @@ import { Message, User } from "./chat";
 
 export type ServerToClientEvents = {
   message: (msg: Message) => void;
+  listUsers: (users: User[]) => void;
   userJoined: (user: User) => void;
   userLeft: (user: User) => void;
 };

@@ -5,7 +5,7 @@ import {
   ServerToClientEvents,
   SocketData,
 } from "../types/socket";
-import { Message } from "../types/chat";
+import { Message, User } from "../types/chat";
 
 type Socket = SocketIOSocket<
   ClientToServerEvents,
@@ -43,16 +43,24 @@ export default class WSChatServer extends Server<
     });
 
     this.on("connection", (socket) => {
-      const username = socket.data.username;
+      const currentUsername = socket.data.username;
+
       socket.broadcast.emit("userJoined", {
         id: socket.id,
-        username,
+        username: currentUsername,
       });
+
+      const users: User[] = [];
+      for (const [username, socket] of this.#usernames.entries()) {
+        if (username === currentUsername) continue;
+        users.push({ id: socket.id, username });
+      }
+      socket.emit("listUsers", users);
 
       socket.on("message", (payload, callback) => {
         socket.broadcast.emit("message", {
           ...payload,
-          author: username,
+          author: currentUsername,
         } satisfies Message);
 
         callback({ status: "OK" });
