@@ -1,7 +1,7 @@
-import { User } from "./chat";
+import { Message, User } from "./chat";
 
 export type ServerToClientEvents = {
-  message: (payload: Message) => void;
+  message: (msg: Message) => void;
   userJoined: (user: User) => void;
   userLeft: (user: User) => void;
 };
