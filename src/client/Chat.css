@@ -29,14 +29,6 @@
   cursor: pointer;
 }
 
-.username {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  height: 45px;
-  padding: 0px 15px;
-}
-
 .messages {
   flex: 1 1 0%;
   overflow-y: auto;

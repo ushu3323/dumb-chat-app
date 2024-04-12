@@ -2,7 +2,7 @@ import "./Chat.css";
 import { useState, type FormEvent } from "react";
 import useChatSession from "./hooks/useChatSession";
 import Message from "./components/Message/Message";
-import UsernamePrompt from "./components/UsernamePrompt/UsernamePrompt";
+import JoinDialog from "./components/JoinDialog/JoinDialog";
 import UsersSidebar from "./components/UsersSidebar/UsersSidebar";
 
 export default function Chat() {
@@ -47,12 +47,7 @@ export default function Chat() {
                   status={status}
                 />
               ))
-            ) : (
-              <div className="username">
-                <span>Username:</span>
-                <UsernamePrompt onSubmit={(username) => join(username)} />
-              </div>
-            )}
+            ) : null}
           </main>
           <div className="message-box">
             <form
@@ -80,6 +75,7 @@ export default function Chat() {
           users={connectedUsers}
         />
       </div>
+      <JoinDialog show={!username} onSubmit={(username) => join(username)} />
     </>
   );
 }
