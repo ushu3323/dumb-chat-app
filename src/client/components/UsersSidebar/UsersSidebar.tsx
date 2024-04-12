@@ -2,15 +2,17 @@ import { User } from "../../../types/chat";
 import "./UsersSidebar.css";
 
 interface Props {
+  id?: string;
   username: string | null;
   users: User[] | null;
+  visible: boolean;
 }
 
 export default function UsersSidebar(props: Props) {
-  const { username, users } = props;
+  const { username, users, visible } = props;
 
   return (
-    <aside className="users-sidebar">
+    <aside id={props.id} className={`users-sidebar`} data-visible={visible}>
       {users ? (
         <ul className="users-list">
           <li className="users-list--item">

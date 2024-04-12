@@ -1,12 +1,18 @@
 .users-sidebar {
-  width: 14em;
-  background-color: var(--black-3);
+  width: 0em;
   height: 100%; 
+  background-color: var(--black-3);
+  transition: width 200ms ease;
+  overflow: hidden;
 }
 
 .users-sidebar .title {
   text-align: center;
   margin-top: 10px; 
+}
+
+.users-sidebar[data-visible="true"] {
+  width: 14em;
 }
 
 .users-list {

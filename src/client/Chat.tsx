@@ -1,5 +1,5 @@
 import "./Chat.css";
-import { type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import useChatSession from "./hooks/useChatSession";
 import Message from "./components/Message/Message";
 import UsernamePrompt from "./components/UsernamePrompt/UsernamePrompt";
@@ -7,6 +7,7 @@ import UsersSidebar from "./components/UsersSidebar/UsersSidebar";
 
 export default function Chat() {
   const { chat, username, join, connectedUsers } = useChatSession();
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   const handleMessageSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,28 +18,41 @@ export default function Chat() {
     chat.sendMessage(message);
   };
 
+  const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
+
   return (
     <>
       <header className="header">
         <h1 className="title">Dumb Chat</h1>
-        <div className="username">
-          <span>Username:</span>
-          {username || (
-            <UsernamePrompt onSubmit={(username) => join(username)} />
-          )}
-        </div>
+        <button
+          id="toggle-sidebar"
+          className="icon-btn"
+          style={{marginRight: "1em"}}
+          onClick={toggleSidebar}
+          aria-expanded={sidebarVisible}
+          aria-controls="users-sidebar"
+        >
+          <span className="material-symbols-rounded">group</span>
+        </button>
       </header>
       <div className="chat">
         <div className="chat-container">
           <main className="messages">
-            {chat.messages.map(({ status, data: { id, author, content } }) => (
-              <Message
-                key={id}
-                author={author}
-                content={content}
-                status={status}
-              />
-            ))}
+            {username ? (
+              chat.messages.map(({ status, data: { id, author, content } }) => (
+                <Message
+                  key={id}
+                  author={author}
+                  content={content}
+                  status={status}
+                />
+              ))
+            ) : (
+              <div className="username">
+                <span>Username:</span>
+                <UsernamePrompt onSubmit={(username) => join(username)} />
+              </div>
+            )}
           </main>
           <div className="message-box">
             <form
@@ -53,13 +67,18 @@ export default function Chat() {
                 placeholder="Mensaje"
                 className="textinput"
               />
-              <button type="submit" disabled={!username}>
+              <button className="button" type="submit" disabled={!username}>
                 Enviar
               </button>
             </form>
           </div>
         </div>
-        <UsersSidebar username={username} users={connectedUsers} />
+        <UsersSidebar
+          id="users-sidebar"
+          visible={sidebarVisible}
+          username={username}
+          users={connectedUsers}
+        />
       </div>
     </>
   );
